@@ -1,5 +1,6 @@
 <script setup vapor lang="ts">
-import {computed, ref} from 'vue';
+import {computed} from 'vue';
+import {useStorage} from '@vueuse/core';
 
 const cards = [
   "aldrin_gorakar.webp",
@@ -29,7 +30,7 @@ const cards = [
   "leo.webp",
 ];
 
-const size = ref(300);
+const size = useStorage('size', 300);
 const sizePx = computed(() => size.value + 'px');
 
 function zoomIn() {
