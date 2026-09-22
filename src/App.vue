@@ -39,6 +39,10 @@ function zoomIn() {
 function zoomOut() {
   size.value = Math.max(100, size.value - 100);
 }
+
+function getCardUrl(card: string) {
+  return new URL(`./assets/${card}`, import.meta.url).href;
+}
 </script>
 
 <template>
@@ -49,7 +53,7 @@ function zoomOut() {
   <main class="main">
     <ul class="card-list">
       <li v-for="card in cards" :key="card" class="ui-card ui-elevated">
-        <img :src="'src/assets/' + card" alt="" />
+        <img :src="getCardUrl(card)" alt="" />
       </li>
     </ul>
 
