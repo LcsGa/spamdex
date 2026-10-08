@@ -1,6 +1,6 @@
 <script setup vapor lang="ts">
-import {computed} from 'vue';
-import {useStorage} from '@vueuse/core';
+import { computed } from "vue";
+import { useStorage } from "@vueuse/core";
 
 const cards = [
   "aldrin_gorakar.webp",
@@ -30,15 +30,14 @@ const cards = [
   "leo.webp",
 ];
 
-const size = useStorage('size', 300);
-const sizePx = computed(() => size.value + 'px');
+const count = useStorage("count", 3);
 
 function zoomIn() {
-  size.value = Math.min(400, size.value + 100);
+  count.value = Math.max(1, count.value - 1);
 }
 
 function zoomOut() {
-  size.value = Math.max(100, size.value - 100);
+  count.value += 1;
 }
 
 function getCardUrl(card: string) {
@@ -60,25 +59,56 @@ function getCardUrl(card: string) {
 
     <div role="group" class="ui-button-group ui-vertical ui-tonal">
       <button class="ui-button" aria-label="Zoom in" @click="zoomIn">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus preview-icon"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-plus preview-icon"
+        >
+          <path d="M5 12h14" />
+          <path d="M12 5v14" />
+        </svg>
       </button>
       <button class="ui-button" aria-label="Zoom out" @click="zoomOut">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-minus preview-icon"><path d="M5 12h14"/></svg>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-minus preview-icon"
+        >
+          <path d="M5 12h14" />
+        </svg>
       </button>
     </div>
   </main>
 </template>
 
 <style scoped>
-.header, .main {
-  padding: var(--size-4);
+.header,
+.main {
+  --gutter: var(--size-4);
+  padding: var(--gutter);
 }
 
 .card-list {
+  --gutters-size: calc(var(--gutter) * (v-bind("count") + 1));
+  --min-size: calc((100dvw - var(--gutters-size)) / v-bind("count"));
   padding: 0;
   display: grid;
-  gap: var(--size-4);
-  grid-template-columns: repeat(auto-fill, minmax(min(v-bind('sizePx'), 100%), 1fr));
+  gap: var(--gutter);
+  grid-template-columns: repeat(auto-fill, minmax(min(var(--min-size), 100%), 1fr));
 }
 
 .ui-button-group {
